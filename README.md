@@ -14,11 +14,18 @@ event. The LLM and embedding providers sit behind interfaces and are selected by
 environment variable; the defaults need no API key, so the whole thing runs,
 tests and evaluates offline.
 
+A demo web UI lives in [`frontend/`](frontend/README.md) — a Next.js static
+export that streams answers, renders `[1]` citations as controls that jump to the
+passage behind them, and shows refusals as a distinct state rather than an answer.
+
 ```
-docker compose up -d        # Postgres + API, migrations applied on start
+docker compose up -d        # Postgres + API + web UI, migrations applied on start
 make seed                   # ingest sample_docs/
 make smoke                  # ask one answerable and one unanswerable question
 ```
+
+Then open <http://localhost:3000> for the UI, or <http://localhost:8000/docs> for
+the API.
 
 - **Stack:** Python 3.12 · FastAPI · Pydantic v2 · SQLAlchemy 2 (async) · Alembic ·
   PostgreSQL 16 + pgvector · uv · Ruff · mypy (strict) · pytest
@@ -101,7 +108,7 @@ The three layers a reviewer usually wants to find first:
 
 ```bash
 cp .env.example .env          # optional: every value is already the default
-docker compose up -d --build  # Postgres 16 + pgvector, API on :8000
+docker compose up -d --build  # Postgres 16 + pgvector, API, and the web UI
 make seed                     # ingest the three documents in sample_docs/
 ```
 
@@ -109,8 +116,11 @@ The API container waits for Postgres, runs `alembic upgrade head`, then starts
 uvicorn — there is no separate migration step. `docker compose logs -f api`
 follows structured JSON logs.
 
-Published ports: API `8000`, Postgres `55432` (55432 rather than 5432 so the
-container never collides with a PostgreSQL already installed on the host).
+Published ports: web UI `3000`, API `8000`, Postgres `55432` (55432 rather than
+5432 so the container never collides with a PostgreSQL already installed on the
+host). Override any of them with `WEB_PORT`, `API_PORT`, `DB_PORT`.
+
+To run only the backend, name the services: `docker compose up -d db api`.
 
 ### Without Docker
 
@@ -162,7 +172,7 @@ version. No secret is ever read from anywhere but the environment.
 | `DATABASE_URL` | `postgresql+asyncpg://rag:rag@localhost:55432/rag` | Async Postgres DSN. Compose overrides the host to `db`. |
 | `APP_ENV` | `local` | `local` / `test` / `production`. |
 | `LOG_LEVEL` / `LOG_JSON` | `INFO` / `true` | Structured JSON logs with request id and latencies. |
-| `CORS_ORIGINS` | `http://localhost:3000` | Comma-separated or a JSON array. |
+| `CORS_ORIGINS` | `http://localhost:3000,http://localhost:3001` | Comma-separated or a JSON array. 3001 is included because `next dev` falls back to it when 3000 is taken. |
 | `API_KEY` | *(empty)* | When set, every `/api/v1` route except `/health` requires `X-API-Key`. |
 | `MAX_UPLOAD_MB` | `20` | Upload size limit; over it is a 413. |
 | `ALLOWED_EXTENSIONS` | `pdf,docx,txt,md` | Anything else is a 415. |
@@ -387,9 +397,16 @@ generation arrives as an `error` event rather than an error status. A bad
 
 ## Frontend integration
 
-CORS origins come from `CORS_ORIGINS`. The response shapes above are the
-contract; `openapi.json` can generate client types (`npx openapi-typescript
-http://localhost:8000/openapi.json -o src/lib/api.d.ts`).
+A working implementation of everything below is in [`frontend/`](frontend/README.md)
+— Next.js 16 static export, Tailwind v4, no state library. `docker compose up -d`
+builds and serves it on <http://localhost:3000>; see its README for the component
+layout and design decisions. The rest of this section is the integration contract
+for writing your own client.
+
+CORS origins come from `CORS_ORIGINS` (default: `localhost:3000` and
+`localhost:3001`, since `next dev` falls back to 3001 when 3000 is taken). The
+response shapes above are the contract; `openapi.json` can generate client types
+(`npx openapi-typescript http://localhost:8000/openapi.json -o src/lib/api.d.ts`).
 
 Consuming the SSE stream with `fetch` (not `EventSource`, which cannot POST):
 
@@ -521,6 +538,7 @@ tests/integration/             upload -> ingest -> chat -> stream against real P
 evals/                         dataset.jsonl + run_eval.py + generated reports
 sample_docs/                   three original demo documents
 scripts/                       seed.py, smoke.py
+frontend/                      Next.js demo UI (see frontend/README.md)
 ```
 
 ### Database schema

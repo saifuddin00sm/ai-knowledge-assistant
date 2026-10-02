@@ -88,7 +88,11 @@ class FakeLLMClient(LLMClient):
         sentence = _best_sentence(match.group(1), question)
         if not sentence:
             return REFUSAL_PHRASE
-        return f"{sentence} [1]"
+        # A quoted block (markdown table, list) must not have the citation
+        # appended to its last line: a renderer would parse the marker as part
+        # of the block and the citation would vanish.
+        separator = "\n\n" if "\n" in sentence else " "
+        return f"{sentence}{separator}[1]"
 
     @staticmethod
     def _usage(system: str, messages: Sequence[LLMMessage], answer: str) -> LLMUsage:

@@ -13,3 +13,6 @@ tests
 # Top-level markdown only: sample_docs/*.md is demo data the image needs.
 /*.md
 !/README.md
+
+# the web UI has its own build context
+frontend

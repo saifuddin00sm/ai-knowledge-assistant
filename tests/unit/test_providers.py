@@ -200,7 +200,21 @@ async def test_fake_llm_keeps_a_line_wrapped_sentence_whole() -> None:
         messages=[LLMMessage(role="user", content="How much annual leave?")],
         max_tokens=256,
     )
-    assert response.text == "Employees receive 28 days of paid\nannual leave per year. [1]"
+    # Multi-line quote: the citation goes on its own line so a markdown renderer
+    # cannot absorb it into the quoted block.
+    assert response.text == "Employees receive 28 days of paid\nannual leave per year.\n\n[1]"
+
+
+async def test_fake_llm_puts_the_citation_outside_a_quoted_table() -> None:
+    table = "| Plan | Price |\n| --- | --- |\n| Team | USD 199 |"
+    system = build_answer_system_prompt(format_context_block([(1, "faq.md", None, table)]))
+    response = await FakeLLMClient().complete(
+        system=system,
+        messages=[LLMMessage(role="user", content="What does the Team plan cost?")],
+        max_tokens=256,
+    )
+    assert response.text == f"{table}\n\n[1]"
+    assert not response.text.splitlines()[-2].endswith("[1]")
 
 
 async def test_fake_llm_only_ever_cites_the_first_excerpt() -> None:
