@@ -1,0 +1,340 @@
+{
+  "header": {
+    "run_at": "2026-10-02T10:43:52+00:00",
+    "llm_provider": "fake",
+    "llm_model": "fake-deterministic-v1",
+    "embedding_provider": "hashing",
+    "embedding_model": "local-hashing-v1",
+    "top_k": 5,
+    "min_score": 0.15,
+    "hybrid_search_enabled": true,
+    "chunk_size_tokens": 300,
+    "chunk_overlap_tokens": 60
+  },
+  "summary": {
+    "cases": 20,
+    "answerable_cases": 15,
+    "unanswerable_cases": 5,
+    "retrieval_hits": 14,
+    "retrieval_hit_rate": 0.933,
+    "correct_refusals": 4,
+    "refusal_correctness": 0.8,
+    "false_refusals": 1,
+    "false_refusal_rate": 0.067,
+    "median_retrieval_ms": 7,
+    "median_generation_ms": 0
+  },
+  "results": [
+    {
+      "id": "leave-days",
+      "question": "How many days of paid annual leave do employees get?",
+      "answerable": true,
+      "expected_document": "employee-handbook.md",
+      "retrieved_documents": [
+        "employee-handbook.md"
+      ],
+      "hit": true,
+      "grounded": true,
+      "refused_correctly": null,
+      "top_score": 0.1926,
+      "answer": "Every full-time employee receives **28 days of paid annual leave** per calendar\nyear, in addition to public holidays in their country of residence. [1]",
+      "retrieval_ms": 20,
+      "generation_ms": 0
+    },
+    {
+      "id": "leave-carryover",
+      "question": "How many unused leave days can be carried into the next year, and when do they expire?",
+      "answerable": true,
+      "expected_document": "employee-handbook.md",
+      "retrieved_documents": [
+        "employee-handbook.md"
+      ],
+      "hit": true,
+      "grounded": true,
+      "refused_correctly": null,
+      "top_score": 0.1928,
+      "answer": "Up to **five unused days** may be carried into the next calendar year. [1]",
+      "retrieval_ms": 13,
+      "generation_ms": 0
+    },
+    {
+      "id": "home-office-budget",
+      "question": "What is the one-time home office budget for a new employee?",
+      "answerable": true,
+      "expected_document": "employee-handbook.md",
+      "retrieved_documents": [
+        "employee-handbook.md"
+      ],
+      "hit": true,
+      "grounded": true,
+      "refused_correctly": null,
+      "top_score": 0.2794,
+      "answer": "On top of that, there is a one-time home office\nbudget of **EUR 1,200**, which can be spent on a desk, chair, monitor, lighting,\nor anything else that improves the workspace. [1]",
+      "retrieval_ms": 10,
+      "generation_ms": 0
+    },
+    {
+      "id": "expense-deadline",
+      "question": "How long after a purchase can an expense still be submitted for reimbursement?",
+      "answerable": true,
+      "expected_document": "employee-handbook.md",
+      "retrieved_documents": [],
+      "hit": false,
+      "grounded": false,
+      "refused_correctly": null,
+      "top_score": null,
+      "answer": "The provided documents don't contain the answer to that question.",
+      "retrieval_ms": 12,
+      "generation_ms": 0
+    },
+    {
+      "id": "parental-leave",
+      "question": "How many weeks of fully paid parental leave are offered to new parents?",
+      "answerable": true,
+      "expected_document": "employee-handbook.md",
+      "retrieved_documents": [
+        "employee-handbook.md"
+      ],
+      "hit": true,
+      "grounded": true,
+      "refused_correctly": null,
+      "top_score": 0.1946,
+      "answer": "Northwind Labs offers 16 weeks of fully paid parental leave to all new parents\nregardless of gender, on top of any statutory entitlement in the employee's\ncountry. [1]",
+      "retrieval_ms": 10,
+      "generation_ms": 0
+    },
+    {
+      "id": "core-hours",
+      "question": "What is the daily core overlap window for meetings?",
+      "answerable": true,
+      "expected_document": "employee-handbook.md",
+      "retrieved_documents": [
+        "employee-handbook.md"
+      ],
+      "hit": true,
+      "grounded": true,
+      "refused_correctly": null,
+      "top_score": 0.2481,
+      "answer": "Northwind Labs runs on asynchronous work with a daily core overlap window of\n10:00\u201314:00 in each employee's local time zone. [1]",
+      "retrieval_ms": 8,
+      "generation_ms": 0
+    },
+    {
+      "id": "team-plan-price",
+      "question": "What does the Lumen Team plan cost per month?",
+      "answerable": true,
+      "expected_document": "lumen-product-faq.md",
+      "retrieved_documents": [
+        "lumen-product-faq.md"
+      ],
+      "hit": true,
+      "grounded": true,
+      "refused_correctly": null,
+      "top_score": 0.2223,
+      "answer": "| Plan | Price | Included ingest | Retention | Seats |\n| ---------- | ---------- | --------------- | --------- | --------- |\n| Starter | USD 49 | 20 GB / month | 7 days | 3 |\n| Team | USD 199 | 150 GB / month | 30 days | 15 |\n| Enterprise | Custom | Negotiated | Up to 1 year | Unlimited | [1]",
+      "retrieval_ms": 6,
+      "generation_ms": 0
+    },
+    {
+      "id": "overage-rate",
+      "question": "What is the ingest overage charge per GB on the Starter and Team plans?",
+      "answerable": true,
+      "expected_document": "lumen-product-faq.md",
+      "retrieved_documents": [
+        "lumen-product-faq.md",
+        "lumen-product-faq.md"
+      ],
+      "hit": true,
+      "grounded": true,
+      "refused_correctly": null,
+      "top_score": 0.3564,
+      "answer": "Overage on the Starter and Team plans is billed at **USD 0.40 per GB**. [1]",
+      "retrieval_ms": 7,
+      "generation_ms": 0
+    },
+    {
+      "id": "log-line-limit",
+      "question": "What is the maximum size of a single log line accepted by the ingest API?",
+      "answerable": true,
+      "expected_document": "lumen-product-faq.md",
+      "retrieved_documents": [
+        "lumen-product-faq.md"
+      ],
+      "hit": true,
+      "grounded": true,
+      "refused_correctly": null,
+      "top_score": 0.1532,
+      "answer": "A single log line may not exceed 256 KB; longer lines\nare truncated and tagged with `lumen.truncated=true`. [1]",
+      "retrieval_ms": 6,
+      "generation_ms": 0
+    },
+    {
+      "id": "enterprise-sev1",
+      "question": "What is the first response target for a Sev-1 issue on the Enterprise support plan?",
+      "answerable": true,
+      "expected_document": "lumen-product-faq.md",
+      "retrieved_documents": [
+        "lumen-product-faq.md"
+      ],
+      "hit": true,
+      "grounded": true,
+      "refused_correctly": null,
+      "top_score": 0.2188,
+      "answer": "| Plan | First response target | Channels |\n| ---------- | --------------------- | ------------------------------- |\n| Starter | 2 business days | Email |\n| Team | 8 business hours | Email, chat |\n| Enterprise | 1 hour for Sev-1 | Email, chat, phone, shared Slack | [1]",
+      "retrieval_ms": 6,
+      "generation_ms": 0
+    },
+    {
+      "id": "alert-interval",
+      "question": "How often are Lumen alert rules evaluated by default?",
+      "answerable": true,
+      "expected_document": "lumen-product-faq.md",
+      "retrieved_documents": [
+        "lumen-product-faq.md"
+      ],
+      "hit": true,
+      "grounded": true,
+      "refused_correctly": null,
+      "top_score": 0.2149,
+      "answer": "It ingests structured application\nlogs, indexes them for full-text and field search, and evaluates alert rules\nagainst the stream as it arrives. [1]",
+      "retrieval_ms": 6,
+      "generation_ms": 0
+    },
+    {
+      "id": "audit-log-retention",
+      "question": "How long are audit logs retained?",
+      "answerable": true,
+      "expected_document": "security-overview.md",
+      "retrieved_documents": [
+        "security-overview.md"
+      ],
+      "hit": true,
+      "grounded": true,
+      "refused_correctly": null,
+      "top_score": 0.1328,
+      "answer": "Audit logs covering authentication,\npermission changes, and data exports are retained for 400 days. [1]",
+      "retrieval_ms": 8,
+      "generation_ms": 0
+    },
+    {
+      "id": "incident-notification",
+      "question": "Within how long are confirmed incidents affecting customer data reported to customers?",
+      "answerable": true,
+      "expected_document": "security-overview.md",
+      "retrieved_documents": [
+        "security-overview.md"
+      ],
+      "hit": true,
+      "grounded": true,
+      "refused_correctly": null,
+      "top_score": 0.2694,
+      "answer": "Confirmed incidents affecting customer\ndata are reported to affected customers within **72 hours** of confirmation,\nwith a written post-incident review published within 14 days. [1]",
+      "retrieval_ms": 6,
+      "generation_ms": 0
+    },
+    {
+      "id": "critical-remediation",
+      "question": "What is the target remediation window for a critical vulnerability?",
+      "answerable": true,
+      "expected_document": "security-overview.md",
+      "retrieved_documents": [
+        "security-overview.md"
+      ],
+      "hit": true,
+      "grounded": true,
+      "refused_correctly": null,
+      "top_score": 0.1642,
+      "answer": "Target remediation windows, measured from triage: [1]",
+      "retrieval_ms": 8,
+      "generation_ms": 0
+    },
+    {
+      "id": "key-rotation",
+      "question": "How often are the encryption keys used for data at rest rotated?",
+      "answerable": true,
+      "expected_document": "security-overview.md",
+      "retrieved_documents": [
+        "security-overview.md"
+      ],
+      "hit": true,
+      "grounded": true,
+      "refused_correctly": null,
+      "top_score": 0.1518,
+      "answer": "Data at rest is encrypted with AES-256\nusing keys held in a managed key service, rotated every 90 days. [1]",
+      "retrieval_ms": 6,
+      "generation_ms": 0
+    },
+    {
+      "id": "pet-insurance",
+      "question": "Does Northwind Labs provide company-paid pet insurance?",
+      "answerable": false,
+      "expected_document": null,
+      "retrieved_documents": [],
+      "hit": null,
+      "grounded": false,
+      "refused_correctly": true,
+      "top_score": null,
+      "answer": "The provided documents don't contain the answer to that question.",
+      "retrieval_ms": 5,
+      "generation_ms": 0
+    },
+    {
+      "id": "on-prem-pricing",
+      "question": "How much does an on-premise deployment of Lumen cost?",
+      "answerable": false,
+      "expected_document": null,
+      "retrieved_documents": [],
+      "hit": null,
+      "grounded": false,
+      "refused_correctly": true,
+      "top_score": null,
+      "answer": "The provided documents don't contain the answer to that question.",
+      "retrieval_ms": 7,
+      "generation_ms": 0
+    },
+    {
+      "id": "ceo-name",
+      "question": "Who is the chief executive officer of Northwind Labs?",
+      "answerable": false,
+      "expected_document": null,
+      "retrieved_documents": [],
+      "hit": null,
+      "grounded": false,
+      "refused_correctly": true,
+      "top_score": null,
+      "answer": "The provided documents don't contain the answer to that question.",
+      "retrieval_ms": 6,
+      "generation_ms": 0
+    },
+    {
+      "id": "bigquery-integration",
+      "question": "Does Lumen ship a first-party integration for Google BigQuery?",
+      "answerable": false,
+      "expected_document": null,
+      "retrieved_documents": [
+        "lumen-product-faq.md"
+      ],
+      "hit": null,
+      "grounded": true,
+      "refused_correctly": false,
+      "top_score": 0.1746,
+      "answer": "Lumen ships first-party integrations for Kubernetes (via a DaemonSet collector),\nAWS CloudWatch Logs, Fluent Bit, OpenTelemetry Collector, and syslog over TLS. [1]",
+      "retrieval_ms": 7,
+      "generation_ms": 0
+    },
+    {
+      "id": "stock-options",
+      "question": "What is the stock option vesting schedule for new engineering hires?",
+      "answerable": false,
+      "expected_document": null,
+      "retrieved_documents": [],
+      "hit": null,
+      "grounded": false,
+      "refused_correctly": true,
+      "top_score": null,
+      "answer": "The provided documents don't contain the answer to that question.",
+      "retrieval_ms": 6,
+      "generation_ms": 0
+    }
+  ]
+}

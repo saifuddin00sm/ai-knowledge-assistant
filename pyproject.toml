@@ -1,0 +1,81 @@
+[project]
+name = "ai-knowledge-assistant"
+version = "0.1.0"
+description = "Document-based RAG API: ingest documents, retrieve with pgvector, answer with inline citations."
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.34",
+    "pydantic>=2.10",
+    "pydantic-settings>=2.7",
+    "sqlalchemy[asyncio]>=2.0.36",
+    "asyncpg>=0.30",
+    "alembic>=1.14",
+    "pgvector>=0.3.6",
+    "python-multipart>=0.0.20",
+    "pymupdf>=1.25",
+    "python-docx>=1.1.2",
+    "tiktoken>=0.8",
+    "anthropic>=0.49",
+    "openai>=1.60",
+    "httpx>=0.28",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3",
+    "pytest-asyncio>=0.25",
+    "ruff>=0.9",
+    "mypy>=1.14",
+    "greenlet>=3.1",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["app"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+src = ["app", "tests", "evals", "scripts"]
+
+[tool.ruff.lint]
+select = [
+    "E", "F", "W",      # pycodestyle / pyflakes
+    "I",                # isort
+    "B",                # bugbear
+    "UP",               # pyupgrade
+    "C4",               # comprehensions
+    "SIM",              # simplify
+    "ASYNC",            # async pitfalls
+    "RUF",
+]
+ignore = ["B008"]       # FastAPI Depends() in defaults is idiomatic
+
+[tool.ruff.lint.isort]
+known-first-party = ["app", "evals", "scripts", "tests"]
+
+[tool.ruff.lint.per-file-ignores]
+"alembic/*" = ["E501"]
+"tests/*" = ["E501"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+warn_unreachable = true
+disallow_untyped_decorators = false
+plugins = ["pydantic.mypy"]
+exclude = ["^alembic/versions/"]
+
+[[tool.mypy.overrides]]
+module = ["pgvector.*", "fitz.*", "docx.*", "tiktoken.*"]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+filterwarnings = ["ignore::DeprecationWarning"]
